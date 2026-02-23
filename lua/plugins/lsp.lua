@@ -160,8 +160,7 @@ return {
           '--query-driver=C:/Users/abc00/MinGW/mingw64/bin/g++*',
         },
         filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
-        capabilities = capabilities,
-        capabilities = require('cmp_nvim_lsp').default_capabilities(),
+        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities()),
       },
       -- pyright = {},
       -- rust_analyzer = {},
@@ -252,14 +251,13 @@ return {
     --
     --  You can press `g?` for help in this menu.
     require('mason').setup()
-    require('mason-tool-installer').setup {
-      ensure_installed = { 'clangd', 'typescript-language-server' },
-    }
 
     -- You can add other tools here that you want Mason to install
     -- for you, so that they are available from within Neovim.
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
+      'clangd',
+      'typescript-language-server',
       'stylua', -- Used to format Lua code
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
