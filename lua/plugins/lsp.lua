@@ -157,7 +157,8 @@ return {
       clangd = {
         cmd = {
           'clangd',
-          '--query-driver=C:/Users/abc00/MinGW/mingw64/bin/g++*',
+          -- !!! QUAN TRỌNG: Hãy thay đổi đường dẫn này cho đúng với máy của bạn !!!
+          '--query-driver=C:/Users/NVT/MinGW/mingw64/bin/g++*',
         },
         filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities()),

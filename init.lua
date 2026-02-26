@@ -21,8 +21,13 @@ vim.api.nvim_set_hl(0, 'RainbowOrange', { fg = '#D19A66' })
 vim.api.nvim_set_hl(0, 'RainbowGreen', { fg = '#98C379' })
 vim.api.nvim_set_hl(0, 'RainbowViolet', { fg = '#C678DD' })
 vim.api.nvim_set_hl(0, 'RainbowCyan', { fg = '#56B6C2' })
-vim.opt.shell = 'C:\\"Program Files"\\PowerShell\\7\\pwsh.exe'
-vim.opt.shellcmdflag = '-NoLogo'
+-- CẤU HÌNH POWERSHELL 7 CHUẨN CHO NEOVIM WIDNOWS
+vim.opt.shell = "pwsh" -- Hoặc "C:/Program Files/PowerShell/7/pwsh.exe" nếu pwsh chưa có trong PATH
+vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+vim.opt.shellquote = ""
+vim.opt.shellxquote = ""
 
 require('lazy').setup {
   {

@@ -41,3 +41,10 @@ vim.opt.shortmess:append 'c' -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append '-' -- hyphenated words recognized by searches
 vim.opt.formatoptions:remove { 'c', 'r', 'o' } -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
 vim.opt.runtimepath:remove '/usr/share/vim/vimfiles' -- separate vim plugins from neovim in case vim still in use
+
+-- Cấu hình PowerShell (pwsh) làm shell mặc định nếu có sẵn
+if vim.fn.has('win32') == 1 and vim.fn.executable('pwsh') == 1 then
+  -- Chỉ cần đặt shell, Neovim có các giá trị mặc định tốt cho pwsh.
+  -- Các cờ lệnh phức tạp bên dưới gây xung đột với các terminal tương tác như toggleterm.
+  vim.o.shell = 'pwsh'
+end
