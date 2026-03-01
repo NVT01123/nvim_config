@@ -5,7 +5,7 @@ return {
     require('toggleterm').setup {
       -- Để trống để toggleterm tự động sử dụng shell mặc định (vim.o.shell)
       size = 20,
-      open_mapping = [[<c-\>]], -- Phím tắt để mở terminal
+      open_mapping = [[<c-h>]], -- Phím tắt để mở terminal
       hide_numbers = true,
       shade_filetypes = {},
       shade_terminals = true,
@@ -31,6 +31,13 @@ return {
         cmd = string.format('g++ "%s" -o "%s.exe" && ./"%s.exe"', file, file_no_ext, file_no_ext)
       elseif ft == 'python' then
         cmd = string.format('python "%s"', file)
+      elseif ft == 'java' then
+        -- Nếu có thư mục lib, thêm vào classpath (Windows dùng dấu chấm phẩy ; để ngăn cách)
+        if vim.fn.isdirectory('lib') == 1 then
+          cmd = string.format('java -cp ".;lib/*" "%s"', file)
+        else
+          cmd = string.format('java "%s"', file)
+        end
       end
 
       if cmd ~= '' then

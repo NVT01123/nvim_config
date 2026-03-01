@@ -143,6 +143,14 @@ return {
     capabilities.offsetEncoding = { 'utf-16' }
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+    -- Cấu hình đường dẫn cho JDTLS (Java)
+    -- Tìm đường dẫn cài đặt của jdtls qua Mason
+    local jdtls_path = vim.fn.stdpath 'data' .. '/mason/packages/jdtls'
+    local jdtls_launcher = vim.fn.glob(jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar')
+    local jdtls_config = jdtls_path .. '/config_win' -- Sử dụng config_win cho Windows
+    local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+    local jdtls_workspace_dir = vim.fn.stdpath 'data' .. '/site/java/workspace-root/' .. project_name
+
     -- Enable the following language servers
     --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
     --
@@ -215,6 +223,48 @@ return {
       html = { filetypes = { 'html', 'twig', 'hbs' } },
       cssls = {},
       dockerls = {},
+      jdtls = {
+        -- Quan trọng: Cấu hình cmd thủ công để tránh xung đột workspace
+        cmd = {
+          'java',
+          '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+          '-Dosgi.bundles.defaultStartLevel=4',
+          '-Declipse.product=org.eclipse.jdt.ls.core.product',
+          '-Dlog.protocol=true',
+          '-Dlog.level=ALL',
+          '-Xmx1g',
+          '--add-modules=ALL-SYSTEM',
+          '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+          '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+          '-jar', jdtls_launcher,
+          '-configuration', jdtls_config,
+          '-data', jdtls_workspace_dir,
+        },
+        settings = {
+          java = {
+            signatureHelp = { enabled = true },
+            contentProvider = { preferred = 'fernflower' }, -- Cho phép xem code của thư viện (decompiler)
+            completion = {
+              favoriteStaticMembers = {
+                'org.junit.jupiter.api.Assertions.*',
+                'java.util.Objects.requireNonNull',
+                'org.mockito.Mockito.*',
+              },
+            },
+            sources = {
+              organizeImports = {
+                starThreshold = 9999,
+                staticStarThreshold = 9999,
+              },
+            },
+            project = {
+              referencedLibraries = {
+                'lib/**/*.jar', -- Tự động nhận diện file .jar trong thư mục lib của dự án hiện tại
+              },
+            },
+          },
+        },
+      },
       terraformls = {},
       jsonls = {},
       yamlls = {},
@@ -260,6 +310,7 @@ return {
       'clangd',
       'typescript-language-server',
       'stylua', -- Used to format Lua code
+      'jdtls',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
