@@ -5,7 +5,7 @@ return {
     require('toggleterm').setup {
       -- Để trống để toggleterm tự động sử dụng shell mặc định (vim.o.shell)
       size = 20,
-      open_mapping = [[<c-h>]], -- Phím tắt để mở terminal
+      open_mapping = [[<c-o>]], -- Phím tắt để mở terminal
       hide_numbers = true,
       shade_filetypes = {},
       shade_terminals = true,
