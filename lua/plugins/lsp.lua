@@ -144,7 +144,6 @@ return {
     capabilities.offsetEncoding = { 'utf-16' }
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-
     -- Enable the following language servers
     --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
     --
@@ -160,7 +159,7 @@ return {
         cmd = {
           'clangd',
           -- !!! QUAN TRỌNG: Hãy thay đổi đường dẫn này cho đúng với máy của bạn !!!
-          '--query-driver=C:/Users/NVT/MinGW/mingw64/bin/g++*',
+          -- '--query-driver=C:/Users/NVT/MinGW/mingw64/bin/g++*',
         },
         filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities()),
@@ -288,11 +287,13 @@ return {
         local jdtls_path = vim.fn.stdpath 'data' .. '/mason/packages/jdtls'
         local jdtls_launcher = vim.fn.glob(jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar')
         local jdtls_config = jdtls_path .. '/config_win'
-        
+
         -- Tự động tìm thư mục gốc của dự án (có .git, pom.xml, gradle, v.v.)
         local root_markers = { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }
         local root_dir = require('jdtls.setup').find_root(root_markers)
-        if root_dir == '' then return end
+        if root_dir == '' then
+          return
+        end
 
         -- Tạo workspace riêng cho từng dự án để tránh xung đột
         local project_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
@@ -308,11 +309,16 @@ return {
             '-Dlog.level=ALL',
             '-Xmx2g', -- Tăng RAM lên 2GB để server ổn định hơn
             '--add-modules=ALL-SYSTEM',
-            '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-            '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-            '-jar', jdtls_launcher,
-            '-configuration', jdtls_config,
-            '-data', workspace_dir,
+            '--add-opens',
+            'java.base/java.util=ALL-UNNAMED',
+            '--add-opens',
+            'java.base/java.lang=ALL-UNNAMED',
+            '-jar',
+            jdtls_launcher,
+            '-configuration',
+            jdtls_config,
+            '-data',
+            workspace_dir,
           },
           root_dir = root_dir,
           settings = {

@@ -28,12 +28,12 @@ return {
 
       if ft == 'cpp' or ft == 'c' then
         -- Compile và Run: g++ file.cpp -o file.exe && ./file.exe
-        cmd = string.format('g++ "%s" -o "%s.exe" && ./"%s.exe"', file, file_no_ext, file_no_ext)
+        cmd = string.format('g++ -Wall "%s" -o "%s.exe" && ./"%s.exe"', file, file_no_ext, file_no_ext)
       elseif ft == 'python' then
         cmd = string.format('python "%s"', file)
       elseif ft == 'java' then
         -- Nếu có thư mục lib, thêm vào classpath (Windows dùng dấu chấm phẩy ; để ngăn cách)
-        if vim.fn.isdirectory('lib') == 1 then
+        if vim.fn.isdirectory 'lib' == 1 then
           cmd = string.format('java -cp ".;lib/*" "%s"', file)
         else
           cmd = string.format('java "%s"', file)
