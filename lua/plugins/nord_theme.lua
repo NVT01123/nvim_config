@@ -1,6 +1,7 @@
 return {
 'shaunsingh/nord.nvim', 
-lazy = false, 
+enabled = false, -- Vô hiệu hóa plugin này để tránh xung đột với cyberdream
+lazy = false,
 priority = 1000,
 config = function() 
 -- Example config in lua
@@ -28,4 +29,3 @@ config = function()
     vim.keymap.set('n', '<leader>bg', toggle_transparency, { noremap = true, silent = true })
 end
 }
-

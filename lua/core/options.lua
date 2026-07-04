@@ -2,7 +2,6 @@ vim.o.hlsearch = false -- Set highlight on search
 vim.wo.number = true -- Make line numbers default
 vim.o.mouse = 'a' -- Enable mouse mode
 vim.o.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim.
--- Note: For Linux clipboard to work properly, ensure xclip/xsel/wl-copy is installed
 vim.o.breakindent = true -- Enable break indent
 vim.o.undofile = true -- Save undo history
 vim.o.ignorecase = true -- Case-insensitive searching UNLESS \C or capital in search
@@ -31,7 +30,7 @@ vim.o.splitright = true -- force all vertical splits to go to the right of curre
 vim.o.swapfile = false -- creates a swapfile
 vim.o.smartindent = true -- make indenting smarter again
 vim.o.showmode = false -- we don't need to see things like -- INSERT -- anymore
-vim.o.showtabline = 2 -- always show tabs
+vim.o.showtabline = 4 -- always show tabs
 vim.o.backspace = 'indent,eol,start' -- allow backspace on
 vim.o.pumheight = 10 -- pop up menu height
 vim.o.conceallevel = 0 -- so that `` is visible in markdown files
@@ -42,3 +41,24 @@ vim.opt.shortmess:append 'c' -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append '-' -- hyphenated words recognized by searches
 vim.opt.formatoptions:remove { 'c', 'r', 'o' } -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
 vim.opt.runtimepath:remove '/usr/share/vim/vimfiles' -- separate vim plugins from neovim in case vim still in use
+
+-- Kích hoạt cơ chế Folding dựa trên Treesitter
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+-- (Tùy chọn) Hiển thị một cột nhỏ bên trái lề để hiện icon đóng/mở.
+-- Đổi thành "0" nếu bạn muốn ẩn cột này đi cho gọn.
+vim.opt.foldcolumn = '1'
+
+-- Mặc định mở rộng tất cả các block code khi vừa mở file
+-- (nếu không set, Neovim sẽ đóng gập toàn bộ code lại rất khó nhìn)
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+
+-- Cấu hình PowerShell (pwsh) làm shell mặc định nếu có sẵn
+if vim.fn.has 'win32' == 1 and vim.fn.executable 'pwsh' == 1 then
+  -- Chỉ cần đặt shell, Neovim có các giá trị mặc định tốt cho pwsh.
+  -- Các cờ lệnh phức tạp bên dưới gây xung đột với các terminal tương tác như toggleterm.
+  vim.o.shell = 'pwsh'
+end
