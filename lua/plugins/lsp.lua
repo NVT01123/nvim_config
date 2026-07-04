@@ -2,9 +2,9 @@ return {
   -- Main LSP Configuration
   'neovim/nvim-lspconfig',
   dependencies = {
-    -- Automatically install LSPs and related tools to stdpath for Neovim
-    { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-    'williamboman/mason-lspconfig.nvim',
+    -- Thêm version = "1.*" để giữ plugin ở phiên bản v1 tương thích với Neovim hiện tại
+    { 'williamboman/mason.nvim', config = true },
+    { 'williamboman/mason-lspconfig.nvim' },
     'WhoIsSethDaniel/mason-tool-installer.nvim',
 
     -- Useful status updates for LSP.
@@ -157,7 +157,6 @@ return {
       clangd = {
         cmd = {
           'clangd',
-          '--query-driver=C:/Users/abc00/MinGW/mingw64/bin/g++*',
         },
         filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities()),
@@ -259,6 +258,10 @@ return {
       'clangd',
       'typescript-language-server',
       'stylua', -- Used to format Lua code
+      'prettier',
+      'shfmt',
+      'ruff',
+      'clang-format',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -270,7 +273,14 @@ return {
           -- by the server configuration above. Useful when disabling
           -- certain features of an LSP (for example, turning off formatting for tsserver)
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
+          -- Kiểm tra nếu đang dùng Neovim 0.11+ thì sử dụng Native API mới
+          if vim.fn.has 'nvim-0.11' == 1 then
+            vim.lsp.config[server_name] = server
+            vim.lsp.enable(server_name)
+          else
+            -- Giữ lại cú pháp cũ dự phòng cho các bản Neovim thấp hơn
+            require('lspconfig')[server_name].setup(server)
+          end
         end,
       },
     }

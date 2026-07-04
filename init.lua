@@ -21,8 +21,8 @@ vim.api.nvim_set_hl(0, 'RainbowOrange', { fg = '#D19A66' })
 vim.api.nvim_set_hl(0, 'RainbowGreen', { fg = '#98C379' })
 vim.api.nvim_set_hl(0, 'RainbowViolet', { fg = '#C678DD' })
 vim.api.nvim_set_hl(0, 'RainbowCyan', { fg = '#56B6C2' })
-vim.opt.shell = 'C:\\"Program Files"\\PowerShell\\7\\pwsh.exe'
-vim.opt.shellcmdflag = '-NoLogo'
+vim.opt.shell = '/bin/zsh'
+vim.opt.shellcmdflag = '-c'
 
 require('lazy').setup {
   {

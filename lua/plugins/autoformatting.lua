@@ -2,22 +2,9 @@ return {
   'nvimtools/none-ls.nvim',
   dependencies = {
     'nvimtools/none-ls-extras.nvim',
-    'jayp0521/mason-null-ls.nvim',
   },
   config = function()
     local null_ls = require 'null-ls'
-
-    require('mason-null-ls').setup {
-      ensure_installed = {
-        'prettier',
-        'stylua',
-        'shfmt',
-        'ruff',
-        'clang-format',
-      },
-      automatic_installation = true,
-    }
-
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
     null_ls.setup {

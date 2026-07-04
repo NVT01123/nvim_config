@@ -2,6 +2,7 @@ vim.o.hlsearch = false -- Set highlight on search
 vim.wo.number = true -- Make line numbers default
 vim.o.mouse = 'a' -- Enable mouse mode
 vim.o.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim.
+-- Note: For Linux clipboard to work properly, ensure xclip/xsel/wl-copy is installed
 vim.o.breakindent = true -- Enable break indent
 vim.o.undofile = true -- Save undo history
 vim.o.ignorecase = true -- Case-insensitive searching UNLESS \C or capital in search
