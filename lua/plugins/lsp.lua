@@ -258,6 +258,7 @@ return {
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'clangd',
+      'jdtls',
       'typescript-language-server',
       'stylua', -- Used to format Lua code
     })
@@ -289,8 +290,16 @@ return {
       pattern = 'java',
       callback = function()
         local jdtls_path = vim.fn.stdpath 'data' .. '/mason/packages/jdtls'
-        local jdtls_launcher = vim.fn.glob(jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar')
-        local jdtls_config = jdtls_path .. '/config_win'
+        local jdtls_launcher = vim.fn.glob(jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar', true, true)[1]
+        local system = vim.loop.os_uname().sysname
+        local config_dir = system == 'Darwin' and 'config_mac' or (system:match 'Windows' and 'config_win' or 'config_linux')
+        local jdtls_config = jdtls_path .. '/' .. config_dir
+
+        -- Mason may still be installing jdtls during the first startup.
+        if not jdtls_launcher or vim.fn.isdirectory(jdtls_config) == 0 then
+          vim.notify('JDTLS is not installed yet. Run :MasonInstall jdtls, then reopen this Java file.', vim.log.levels.WARN)
+          return
+        end
 
         -- Tự động tìm thư mục gốc của dự án (có .git, pom.xml, gradle, v.v.)
         local root_markers = { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }
@@ -300,7 +309,7 @@ return {
         end
 
         -- Tạo workspace riêng cho từng dự án để tránh xung đột
-        local project_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
+        local project_name = vim.fn.fnamemodify(root_dir, ':p:h:t') .. '-' .. vim.fn.sha256(root_dir):sub(1, 8)
         local workspace_dir = vim.fn.stdpath 'data' .. '/site/java/workspace-root/' .. project_name
 
         local config = {

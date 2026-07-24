@@ -7,10 +7,33 @@ return {
       line = '<leader>gc',
     },
     pre_hook = function(ctx)
-      -- Avoid Comment.nvim's Tree-sitter comment detection for C-family buffers.
-      -- Its failure path reports the unhelpful "[Comment.nvim] nil" message.
-      if vim.bo.filetype == 'c' or vim.bo.filetype == 'cpp' then
-        return ctx.ctype == require('Comment.utils').ctype.blockwise and '/*%s*/' or '//%s'
+      local filetype = vim.bo.filetype
+      if filetype == 'json' then
+        error({
+          msg = 'JSON does not support comments. Use JSONC if comments are required.',
+        })
+      end
+
+      -- Return explicit commentstrings for these filetypes instead of relying
+      -- on Tree-sitter detection, which can otherwise produce a nil error.
+      local commentstrings = {
+        c = { line = '//%s', block = '/*%s*/' },
+        cpp = { line = '//%s', block = '/*%s*/' },
+        java = { line = '//%s', block = '/*%s*/' },
+        python = { line = '#%s' },
+      }
+      local syntax = commentstrings[filetype]
+      if syntax then
+        local ctype = require('Comment.utils').ctype
+        if ctx.ctype == ctype.blockwise then
+          if not syntax.block then
+            error({
+              msg = filetype .. ' does not support block comments.',
+            })
+          end
+          return syntax.block
+        end
+        return syntax.line
       end
     end,
   },
