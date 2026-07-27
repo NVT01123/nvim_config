@@ -67,19 +67,19 @@ Một số formatter trong cấu hình chạy từ `PATH`. Cài theo ngôn ngữ
 
 ```sh
 # C/C++
-sudo apt install clang-format
+# clang-format được Mason tự cài theo cấu hình.
 
 # Shell
 sudo apt install shfmt
 
 # JavaScript/TypeScript, HTML, JSON, YAML, Markdown
-npm install -g prettier
+# Prettier được Mason tự cài theo cấu hình; không cần cài npm global.
 
 # Python
 python3 -m pip install --user ruff
 ```
 
-Để dùng Prettier cần Node.js/npm; trên Debian/Ubuntu có thể cài bằng `sudo apt install nodejs npm`. Nếu không cài một formatter, thao tác lưu file cho loại file đó có thể báo lỗi định dạng, nhưng LSP vẫn hoạt động.
+Prettier được Mason cài tự động khi mở Neovim có mạng. Cấu hình ép Prettier và clang-format dùng 4 spaces, kể cả khi project có `.prettierrc` hoặc `.clang-format` khác; C/C++ dùng các quy tắc còn lại của LLVM style. Java được JDTLS format-on-save bằng profile Eclipse dùng 4 spaces. Nếu không cài một formatter, thao tác lưu file cho loại file đó có thể báo lỗi định dạng, nhưng LSP vẫn hoạt động.
 
 ## Khởi động và cập nhật plugin
 

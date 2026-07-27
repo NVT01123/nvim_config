@@ -258,7 +258,9 @@ return {
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'clangd',
+      'clang-format', -- Used to format C and C++
       'jdtls',
+      'prettier', -- Used to format JavaScript and TypeScript
       'typescript-language-server',
       'stylua', -- Used to format Lua code
     })
@@ -289,6 +291,7 @@ return {
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'java',
       callback = function()
+        local java_format_group = vim.api.nvim_create_augroup('JdtlsFormatting', { clear = false })
         local jdtls_path = vim.fn.stdpath 'data' .. '/mason/packages/jdtls'
         local jdtls_launcher = vim.fn.glob(jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar', true, true)[1]
         local system = vim.loop.os_uname().sysname
@@ -356,8 +359,35 @@ return {
                   'lib/**/*.jar',
                 },
               },
+              format = {
+                enabled = true,
+                settings = {
+                  url = vim.fn.stdpath('config') .. '/formatters/eclipse-java-formatter.xml',
+                  profile = 'Nvim Spaces 4',
+                },
+              },
             },
           },
+          on_attach = function(client, bufnr)
+            if not client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
+              return
+            end
+
+            vim.api.nvim_clear_autocmds { group = java_format_group, buffer = bufnr }
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              group = java_format_group,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format {
+                  async = false,
+                  bufnr = bufnr,
+                  filter = function(format_client)
+                    return format_client.name == 'jdtls'
+                  end,
+                }
+              end,
+            })
+          end,
         }
         -- Khởi động JDTLS
         require('jdtls').start_or_attach(config)

@@ -10,12 +10,28 @@ return {
 
     null_ls.setup {
       sources = {
-        null_ls.builtins.formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown' } },
+        null_ls.builtins.formatting.prettier.with {
+          filetypes = {
+            'html',
+            'javascript',
+            'javascriptreact',
+            'json',
+            'markdown',
+            'typescript',
+            'typescriptreact',
+            'yaml',
+          },
+          extra_args = { '--tab-width', '4', '--no-use-tabs' },
+        },
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.formatting.shfmt.with { args = { '-i', '4' } },
         require('none-ls.formatting.ruff').with { extra_args = { '--extend-select', 'I' } },
         require 'none-ls.formatting.ruff_format',
-        null_ls.builtins.formatting.clang_format,
+        null_ls.builtins.formatting.clang_format.with {
+          filetypes = { 'c', 'cpp', 'cuda', 'objc', 'objcpp', 'proto' },
+          -- Ignore per-project .clang-format indentation settings so every C/C++ buffer uses four spaces.
+          extra_args = { '--style={BasedOnStyle: LLVM, IndentWidth: 4, TabWidth: 4, UseTab: Never}' },
+        },
       },
       on_attach = function(client, bufnr)
         -- SỬ DỤNG CÁCH KIỂM TRA MỚI AN TOÀN HƠN CHO NEOVIM 0.10+
