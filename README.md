@@ -88,3 +88,14 @@ nvim
 ```
 
 Trong Neovim, dùng `:Lazy` để xem/cập nhật plugin và `:Mason` để xem trạng thái công cụ. Sau khi thay đổi cấu hình LSP, khởi động lại Neovim là cách đơn giản nhất để áp dụng đầy đủ.
+
+## Đọc và sửa file nhị phân
+
+Cấu hình có `hex.nvim` để xem và sửa file nhị phân ở dạng hex. Cài chương trình `xxd` và bảo đảm nó có trong `PATH`:
+
+```sh
+# Debian/Ubuntu
+sudo apt install xxd
+```
+
+Mở file như bình thường, rồi ở Normal mode nhấn `Space b b` để chuyển đổi giữa dạng thường và hex. Bạn cũng có thể dùng `:HexDump`, `:HexAssemble` hoặc `:HexToggle`. Có thể sửa byte trong hex view và lưu bằng `:w`; plugin sẽ chuyển dữ liệu trở lại dạng nhị phân trước khi ghi file.
