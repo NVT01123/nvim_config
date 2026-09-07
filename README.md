@@ -99,3 +99,90 @@ sudo apt install xxd
 ```
 
 Mở file như bình thường, rồi ở Normal mode nhấn `Space b b` để chuyển đổi giữa dạng thường và hex. Bạn cũng có thể dùng `:HexDump`, `:HexAssemble` hoặc `:HexToggle`. Có thể sửa byte trong hex view và lưu bằng `:w`; plugin sẽ chuyển dữ liệu trở lại dạng nhị phân trước khi ghi file.
+
+## Phím tắt (Keymaps)
+
+**Leader Key:** `<Space>`
+
+### 1. Quản lý Cửa sổ, File & Buffer
+
+| Phím tắt                    | Chức năng                                |
+| :-------------------------- | :--------------------------------------- |
+| `<C-s>` hoặc `<leader>w`    | Lưu file                                 |
+| `<leader>sn`                | Lưu file nhưng bỏ qua tự động định dạng  |
+| `<C-q>`                     | Đóng file hiện tại                       |
+| `<leader>x`                 | Đóng buffer hiện tại (`:bd`)             |
+| `<leader>aq`                | Đóng cửa sổ hiện tại có xác nhận         |
+| `<leader>Q`                 | Thoát hoàn toàn Neovim có xác nhận       |
+| `<leader>n`                 | Mở file/buffer mới trống                 |
+| `<leader>v`                 | Chia đôi cửa sổ theo chiều dọc           |
+| `<leader>h`                 | Chia đôi cửa sổ theo chiều ngang         |
+| `<leader>se`                | Cân bằng kích thước các cửa sổ đang chia |
+| `<leader>xs`                | Đóng cửa sổ chia hiện tại                |
+| `<C-h/j/k/l>`               | Di chuyển con trỏ giữa các cửa sổ        |
+| `<Tab>` / `<S-Tab>`         | Chuyển sang buffer tiếp theo / trước đó  |
+| `<leader>to` / `<leader>tx` | Mở / đóng tab mới                        |
+| `<leader>tn` / `<leader>tp` | Chuyển sang tab kế tiếp / trước đó       |
+| `<leader>e`                 | Bật/tắt thanh duyệt file (Neo-tree)      |
+| `<leader>ss` / `<leader>sl` | Lưu / tải lại phiên làm việc (Session)   |
+
+### 2. Chỉnh sửa & Di chuyển con trỏ
+
+| Phím tắt                   | Chức năng                                           |
+| :------------------------- | :-------------------------------------------------- |
+| `jk` hoặc `kj`             | Thoát Insert mode (nhấn nhanh)                      |
+| `<Esc>`                    | Xóa highlight tìm kiếm                              |
+| `x`                        | Xóa ký tự nhưng không lưu vào clipboard             |
+| `<C-d>` / `<C-u>`          | Cuộn lên/xuống nửa trang và căn giữa                |
+| `n` / `N`                  | Tới kết quả tìm kiếm tiếp theo/trước đó và căn giữa |
+| `<Up/Down/Left/Right>`     | Thay đổi kích thước cửa sổ                          |
+| `<leader>+` / `<leader>-`  | Tăng/giảm giá trị số dưới con trỏ                   |
+| `yy`                       | Copy dòng hiện tại vào clipboard hệ thống (`"+yy`)  |
+| `<leader>j` (Normal)       | Tìm và thay thế từ đang nằm dưới con trỏ            |
+| `<` / `>` (Visual)         | Thụt lề và giữ nguyên vùng chọn                     |
+| `<A-j>` / `<A-k>` (Visual) | Di chuyển dòng/đoạn code bôi đen lên/xuống          |
+| `p` (Visual)               | Dán đè mà không thay thế bộ nhớ tạm (`"_dP`)        |
+| `zR` / `zM`                | Mở / Đóng tất cả các block code (Code folding)      |
+
+### 3. Công cụ mã nguồn & LSP (Ngôn ngữ)
+
+| Phím tắt                    | Chức năng                                                       |
+| :-------------------------- | :-------------------------------------------------------------- |
+| `gd` / `gD`                 | Đi đến Định nghĩa (Definition) / Khai báo (Declaration)         |
+| `gr` / `gI`                 | Xem nơi sử dụng (References) / Phần triển khai (Implementation) |
+| `<leader>D`                 | Xem định nghĩa kiểu dữ liệu (Type Definition)                   |
+| `<leader>ds` / `<leader>ws` | Tìm symbol trong file hiện tại / toàn bộ workspace              |
+| `<leader>rn`                | Đổi tên biến/hàm (Rename)                                       |
+| `<leader>ca`                | Gợi ý sửa lỗi code (Code Action)                                |
+| `<leader>th`                | Bật/tắt Inlay Hints                                             |
+| `<leader>do`                | Bật/tắt cảnh báo (Diagnostics) toàn cục                         |
+| `[d` / `]d`                 | Tới lỗi/cảnh báo trước đó / kế tiếp                             |
+| `<leader>d` / `<leader>q`   | Hiển thị lỗi popup / Mở danh sách lỗi                           |
+
+### 4. Tìm kiếm với Telescope
+
+| Phím tắt                       | Chức năng                                             |
+| :----------------------------- | :---------------------------------------------------- |
+| `<leader>ff` hoặc `<leader>sf` | Tìm kiếm file (`find_files`)                          |
+| `<leader>fg` hoặc `<leader>sg` | Tìm kiếm nội dung trong toàn bộ project (`live_grep`) |
+| `<leader>sh`                   | Tìm kiếm Help Tags                                    |
+| `<leader>sk`                   | Tìm kiếm phím tắt                                     |
+| `<leader>ss`                   | Chọn các module của Telescope                         |
+| `<leader>sw`                   | Tìm kiếm từ dưới con trỏ                              |
+| `<leader>sd`                   | Tìm kiếm các cảnh báo/lỗi (Diagnostics)               |
+| `<leader>sr`                   | Mở lại phiên tìm kiếm trước đó (Resume)               |
+| `<leader>s.`                   | Tìm file dùng gần đây                                 |
+| `<leader><leader>`             | Tìm buffer đang mở                                    |
+| `<leader>/`                    | Tìm kiếm chữ trong file hiện tại (Fuzzy find)         |
+| `<leader>s/`                   | Tìm kiếm chữ trong tất cả các file đang mở            |
+
+### 5. Giao diện & Tiện ích khác
+
+| Phím tắt                   | Chức năng                                   |
+| :------------------------- | :------------------------------------------ |
+| `<leader>lw`               | Bật/tắt tự động xuống dòng (Line wrap)      |
+| `<leader>tt`               | Bật/tắt Terminal (ToggleTerm)               |
+| `<leader>r`                | Chạy code (Run Code)                        |
+| `<leader>bg`               | Bật/tắt nền trong suốt (Transparency)       |
+| `<leader>bb`               | Bật/tắt chế độ xem file nhị phân (Hex view) |
+| `<leader>k` / `<leader>tk` | Bật/tắt hiển thị phím gõ trên màn hình      |
