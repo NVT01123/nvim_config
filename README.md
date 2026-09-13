@@ -15,6 +15,19 @@ sudo apt install git neovim curl unzip build-essential
 
 `build-essential` cần cho một số parser của Treesitter. Nếu dùng bản Neovim cũ từ kho hệ điều hành, hãy cài bản Neovim mới hơn từ nguồn phát hành chính thức.
 
+## Cài đặt python + nodejs
+
+sudo apt update
+sudo apt install -y nodejs npm python3-pip python3-venv python3-full curl tar unzip
+
+## Cài đặt clipboard
+
+sudo apt install -y xclip wl-clipboard
+
+## Clang format
+
+sudo apt install -y clang-format
+
 ## Cài LSP bằng Mason
 
 Mở Neovim rồi chạy:
