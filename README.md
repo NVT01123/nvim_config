@@ -11,6 +11,16 @@ Trên Debian/Ubuntu:
 ```sh
 sudo apt update
 sudo apt install git neovim curl unzip build-essential
+
+curl -LO "https://github.com/neovim/neovim/releases/download/v0.12.4/nvim-linux-x86_64.tar.gz"
+```
+
+## Install
+
+```
+sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+rm nvim-linux-x86_64.tar.gz
+sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 ```
 
 `build-essential` cần cho một số parser của Treesitter. Nếu dùng bản Neovim cũ từ kho hệ điều hành, hãy cài bản Neovim mới hơn từ nguồn phát hành chính thức.
@@ -27,6 +37,10 @@ sudo apt install -y xclip wl-clipboard
 ## Clang format
 
 sudo apt install -y clang-format
+
+## Live Grep
+
+sudo apt install -y ripgrep
 
 ## Cài LSP bằng Mason
 
